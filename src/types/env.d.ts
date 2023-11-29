@@ -1,0 +1,12 @@
+declare global {
+	namespace NodeJS {
+		interface ProcessEnv {
+			PORT: string
+			DATABASE_URL: string
+			SECRET: string
+		}
+	}
+}
+
+export { }
+
