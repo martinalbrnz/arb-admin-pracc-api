@@ -12,6 +12,7 @@ import { CategoryModule } from './resources/category/category.module'
 import { RegisterModule } from './resources/register/register.module'
 import { UserModule } from './resources/user/user.module'
 import { ProductModule } from './resources/product/product.module'
+import { ClientModule } from './resources/client/client.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { ProductModule } from './resources/product/product.module'
     AccountModule,
     AccountUserModule,
     CategoryModule,
-    ProductModule
+    ProductModule,
+    ClientModule
   ],
   controllers: [AppController],
   providers: [AppService],
