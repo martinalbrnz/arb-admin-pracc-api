@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common'
+import { AuthGuard } from '@guards/auth/auth.guard'
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common'
 import { PaginationQuery } from 'src/models/pagination-query.model'
 import { ClientService } from './client.service'
 import { CreateClientDto } from './dto/create-client.dto'
 import { UpdateClientDto } from './dto/update-client.dto'
 
 @Controller('client')
+@UseGuards(AuthGuard)
 export class ClientController {
   constructor(private readonly clientService: ClientService) { }
 

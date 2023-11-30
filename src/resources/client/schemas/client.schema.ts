@@ -9,13 +9,13 @@ export class Client {
 	@Prop({ required: true })
 	name: string
 
-	@Prop()
+	@Prop({ default: null })
 	phone: string
 
 	@Prop({ required: true, unique: true })
 	email: string
 
-	@Prop()
+	@Prop({ default: 0 })
 	checkingAccount: number
 
 	@Prop({ default: true })

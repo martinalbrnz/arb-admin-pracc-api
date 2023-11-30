@@ -9,7 +9,7 @@ export class CreateProductDto {
 
 	@IsOptional()
 	@MinLength(2)
-	description?: string
+	description: string
 
 	@IsOptional()
 	@Min(0)

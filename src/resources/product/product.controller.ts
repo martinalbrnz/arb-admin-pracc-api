@@ -1,12 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common'
-// import { AuthGuard } from 'src/guards/auth/auth.guard'
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common'
+import { AuthGuard } from 'src/guards/auth/auth.guard'
 import { PaginationQuery } from 'src/models/pagination-query.model'
 import { CreateProductDto } from './dto/create-product.dto'
 import { UpdateProductDto } from './dto/update-product.dto'
 import { ProductService } from './product.service'
 
 @Controller('product')
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 export class ProductController {
   constructor(private readonly productService: ProductService) { }
 

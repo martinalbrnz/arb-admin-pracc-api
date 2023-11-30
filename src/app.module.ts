@@ -6,13 +6,10 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
 import configuration from './config/configuration'
-import { AccountUserModule } from './resources/account-user/account-user.module'
-import { AccountModule } from './resources/account/account.module'
-import { CategoryModule } from './resources/category/category.module'
-import { RegisterModule } from './resources/register/register.module'
-import { UserModule } from './resources/user/user.module'
+import { ClientModule } from './resources/client/client.module'
 import { ProductModule } from './resources/product/product.module'
-import { ClientModule } from './resources/client/client.module';
+import { SaleModule } from './resources/sale/sale.module'
+import { UserModule } from './resources/user/user.module'
 
 @Module({
   imports: [
@@ -21,12 +18,9 @@ import { ClientModule } from './resources/client/client.module';
     JwtModule.register({ global: true }),
     UserModule,
     AuthModule,
-    RegisterModule,
-    AccountModule,
-    AccountUserModule,
-    CategoryModule,
     ProductModule,
-    ClientModule
+    ClientModule,
+    SaleModule
   ],
   controllers: [AppController],
   providers: [AppService],
