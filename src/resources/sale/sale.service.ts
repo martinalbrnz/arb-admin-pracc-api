@@ -14,7 +14,24 @@ export class SaleService {
   ) { }
 
   async create(createSaleDto: CreateSaleDto) {
-    return 'This action creates a sale'
+    const products = createSaleDto.articles.map(article => article.product)
+
+    const productsQuery = await this.productModel
+      .find().where('_id').in(products).select('price').lean()
+
+    const articles = createSaleDto.articles.map(article => {
+      const currentProduct = productsQuery
+        .find(item => item._id.toString() === article.product.toString())
+      return {
+        ...article,
+        unitCost: currentProduct.price,
+        partialCost: currentProduct.price * article.quantity * (1 - article.discount)
+      }
+    })
+
+    const newSale = new this.saleModel({ ...createSaleDto, articles })
+
+    return newSale.save()
   }
 
   findAll() {
