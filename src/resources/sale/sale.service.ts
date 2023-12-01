@@ -51,6 +51,8 @@ export class SaleService {
       .find()
       .skip(Number(take) * (Number(page) - 1))
       .limit(Number(take))
+      .populate('client', { name: 1, email: 1 })
+      .populate('articles.product', { __v: 0, price: 0, stock: 0 })
       .exec()
 
     const count = await this.saleModel.countDocuments().exec()
@@ -69,6 +71,10 @@ export class SaleService {
   }
 
   findOne(id: string) {
-    return this.saleModel.findById(id).exec()
+    return this.saleModel
+      .findById(id)
+      .populate('client', { name: 1, email: 1 })
+      .populate('articles.product', { __v: 0, price: 0, stock: 0 })
+      .exec()
   }
 }
