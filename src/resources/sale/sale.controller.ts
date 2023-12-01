@@ -1,5 +1,6 @@
 import { AuthGuard } from '@guards/auth/auth.guard'
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common'
+import { PaginationQuery } from 'src/models/pagination-query.model'
 import { CreateSaleDto } from './dto/create-sale.dto'
 import { SaleService } from './sale.service'
 
@@ -14,22 +15,12 @@ export class SaleController {
   }
 
   @Get()
-  findAll() {
-    return this.saleService.findAll()
+  find(@Query() query: PaginationQuery) {
+    return this.saleService.find(query)
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.saleService.findOne(+id)
+    return this.saleService.findOne(id)
   }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateSaleDto: UpdateSaleDto) {
-  //   return this.saleService.update(+id, updateSaleDto)
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.saleService.remove(+id)
-  // }
 }

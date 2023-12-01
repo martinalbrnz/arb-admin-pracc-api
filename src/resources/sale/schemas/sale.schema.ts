@@ -27,7 +27,7 @@ export class Sale {
 	@Prop()
 	observations: string
 
-	@Prop()
+	@Prop({ required: true })
 	totalCost: number
 
 	@Prop({ type: mongoose.Schema.Types.ObjectId, ref: Client.name })

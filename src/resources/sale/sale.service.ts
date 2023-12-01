@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Product, ProductDocument } from '@resources/product/schemas/product.schema'
 import { Model } from 'mongoose'
+import { PaginationQuery } from 'src/models/pagination-query.model'
 import { CreateSaleDto } from './dto/create-sale.dto'
 import { Sale } from './entities/sale.entity'
 import { SaleDocument } from './schemas/sale.schema'
@@ -29,24 +30,45 @@ export class SaleService {
       }
     })
 
-    const newSale = new this.saleModel({ ...createSaleDto, articles })
+    const totalCost = articles.reduce((acc, curr) => {
+      return acc + curr.partialCost
+    }, 0)
+
+    const newSale = new this.saleModel({ ...createSaleDto, articles, totalCost })
 
     return newSale.save()
   }
 
-  findAll() {
-    return 'This action returns all sale'
+  async find(query: PaginationQuery) {
+    const { take = 10, page = 1 } = query
+    if (!page || Number(page) < 1) throw new BadRequestException('Page should be greater or equal to 1')
+    if (isNaN(Number(page))) throw new BadRequestException('Page should be a number')
+
+    if (!take || Number(take) < 1) throw new BadRequestException('Take should be greater or equal to 1')
+    if (isNaN(Number(take))) throw new BadRequestException('Take should be a number')
+
+    const data = await this.saleModel
+      .find()
+      .skip(Number(take) * (Number(page) - 1))
+      .limit(Number(take))
+      .exec()
+
+    const count = await this.saleModel.countDocuments().exec()
+    const pages = Math.ceil(count / take)
+
+    return {
+      data,
+      error: false,
+      pagination: {
+        count,
+        elementsPerPage: Number(take),
+        currentPage: Number(page),
+        pages
+      }
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} sale`
+  findOne(id: string) {
+    return this.saleModel.findById(id).exec()
   }
-
-  // update(id: number, updateSaleDto: UpdateSaleDto) {
-  //   return `This action updates a #${id} sale`
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} sale`
-  // }
 }
